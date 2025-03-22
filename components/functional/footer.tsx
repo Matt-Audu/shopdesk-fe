@@ -7,12 +7,13 @@ import twitter from "../../public/icons/twitter.svg";
 import facebook from "../../public/icons/facebook.svg";
 import instagram from "../../public/icons/instagram.svg";
 import github from "../../public/icons/github.svg";
+import { FaTiktok } from "react-icons/fa6";
 import Logo from "./logo";
 
 const Footer = () => {
   return (
     <footer className="px-[clamp(16px,_4vw,_120px)]">
-      <div className="w-full bg-[#E5F5ED] rounded-2xl flex flex-col items-center justify-center p-[clamp(16px,_4vw,_48px)]" hidden>
+      <div className="w-full bg-[#E5F5ED] rounded-2xl flex flex-col items-center justify-center p-[clamp(16px,_4vw,_48px)]">
         <p className="text-center text-[clamp(30px,_5vw,_48px)] font-circular-bold">
           Still thinking about it?
         </p>
@@ -58,7 +59,7 @@ const Footer = () => {
       </div>
 
       <div className="mt-20">
-        <div hidden className="add-this-back-flex hidden justify-between max-[950px]:grid max-[950px]:grid-cols-4 max-[650px]:grid-cols-3 max-[500px]:flex max-[500px]:flex-col max-[500px]:items-center max-[500px]:text-center max-[950px]:gap-y-12 gap-x-4">
+        <div className="flex justify-between max-[950px]:grid max-[950px]:grid-cols-4 max-[650px]:grid-cols-3 max-[500px]:flex max-[500px]:flex-col max-[500px]:items-center max-[500px]:text-center max-[950px]:gap-y-12 gap-x-4">
           <div className="w-[248px] max-[950px]:col-span-2 ">
             <div className="mb-8">
               <Logo />
@@ -73,18 +74,27 @@ const Footer = () => {
             </p>
 
             <div className="flex gap-4 mt-[70px] max-[500px]:hidden">
-              <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
-                <Image src={twitter} alt="twitter" />
-              </div>
-              <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
-                <Image src={facebook} alt="facebook" />
-              </div>
-              <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
-                <Image src={instagram} alt="instagram" />
-              </div>
-              <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
-                <Image src={github} alt="github" />
-              </div>
+            <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
+    <a href="https://x.com/shopdesk_?s=21" target="_blank" rel="noopener noreferrer">
+      <Image src={twitter} alt="twitter" />
+    </a>
+  </div>
+  <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
+    <a href="https://www.facebook.com/share/18weYAqtPe/" target="_blank" rel="noopener noreferrer">
+      <Image src={facebook} alt="facebook" />
+    </a>
+  </div>
+  <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
+    <a href="https://www.instagram.com/shopdesk_?igsh=MXIybG5sNXhvazI5dg==" target="_blank" rel="noopener noreferrer">
+      <Image src={instagram} alt="instagram" />
+    </a>
+  </div>
+  <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
+    <a href="https://www.tiktok.com/@shopdesk_?_t=ZM-8urzNXSQ1PL&_r=1" target="_blank" rel="noopener noreferrer">
+      {/* <Image src={tiktok} alt="tiktok" /> */}
+      <FaTiktok />
+    </a>
+  </div>
             </div>
           </div>
 
@@ -144,25 +154,34 @@ const Footer = () => {
 
         <hr className="border border-[#E2E8F0]  mb-6 md:my-12" />
 
-        <div hidden className="w-full hidden mb-12 add-this-back-flex justify-center gap-4 mt-[70px] min-[500px]:hidden">
-          <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
-            <Image src={twitter} alt="twitter" />
-          </div>
-          <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
-            <Image src={facebook} alt="facebook" />
-          </div>
-          <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
-            <Image src={instagram} alt="instagram" />
-          </div>
-          <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
-            <Image src={github} alt="github" />
-          </div>
-        </div>
+        <div className="w-full mb-12 flex justify-center gap-4 mt-[70px] min-[500px]:hidden">
+        <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
+    <a href="https://x.com/shopdesk_?s=21" target="_blank" rel="noopener noreferrer">
+      <Image src={twitter} alt="twitter" />
+    </a>
+  </div>
+  <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
+    <a href="https://www.facebook.com/share/18weYAqtPe/" target="_blank" rel="noopener noreferrer">
+      <Image src={facebook} alt="facebook" />
+    </a>
+  </div>
+  <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
+    <a href="https://www.instagram.com/shopdesk_?igsh=MXIybG5sNXhvazI5dg==" target="_blank" rel="noopener noreferrer">
+      <Image src={instagram} alt="instagram" />
+    </a>
+  </div>
+  <div className="size-7 flex items-center justify-center border border-[#D4D4D8] rounded-full">
+    <a href="https://www.tiktok.com/@shopdesk_?_t=ZM-8urzNXSQ1PL&_r=1" target="_blank" rel="noopener noreferrer">
+      {/* <Image src={tiktok} alt="tiktok" /> */}
+      <FaTiktok />
+    </a>
+  </div>
+</div>
 
         <div className="w-full flex items-center gap-4 text-[14px] text-[#71717A] mb-8 justify-center">
-          <p>© Copyright 2024, Powered by Timbu Business</p>
+          <p>© Copyright 2025, Powered by Timbu Business</p>
 
-          <ul className="add-this-back-flex gap-5 hidden max-[900px]:hidden">
+          <ul className="flex gap-5 max-[900px]:hidden">
             <li>
               <Link href="/cookies">Cookies</Link>
             </li>
