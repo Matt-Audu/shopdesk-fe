@@ -6,4 +6,6 @@ export type UserType = {
   last_name: string;
   phone_number: string;
   user_type: string;
+  image_url: string;
+  
 };
