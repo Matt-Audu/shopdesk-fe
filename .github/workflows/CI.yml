@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, shopdesk]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -41,6 +41,43 @@ jobs:
 
       # - name: Run tests
       #   run: bun test
+      
+      - name: Install Postman CLI and Newman
+        run: |
+          # Install Postman CLI
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+          # Install Newman and reporters
+          npm install -g newman newman-reporter-htmlextra newman-reporter-json
+          
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+        
+      - name: Run QA Test with Postman CLI
+        run: |
+          postman collection run "30840973-35c6dce8-f965-4b14-949c-53eaea84c29f"
+          
+      - name: Run QA Test with Newman (for reporting)
+        run: |
+          newman run "https://api.getpostman.com/collections/30840973-35c6dce8-f965-4b14-949c-53eaea84c29f?apikey=${{ secrets.POSTMAN_API_KEY }}" \
+            -r cli,json,htmlextra \
+            --reporter-json-export newman-report.json \
+            --reporter-htmlextra-export newman-report.html \
+            --reporter-htmlextra-title "QA Test Results"
+            
+      - name: Upload Test Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-test-results
+          path: |
+            newman-report.json
+            newman-report.html
+            
+      - name: Display Test Results
+        run: |
+          echo "=== Test Results Summary ==="
+          cat newman-report.json | jq -r '.run.stats'
+          echo "=== Failed Tests (if any) ==="
+          cat newman-report.json | jq -r '.run.failures[]?.error.message // "No failures"'
 
       - name: Log CI end time
         if: always()

@@ -4,13 +4,10 @@ import SalesModal from '@/components/modal/salesmodal/sales-modal';
 import { Button } from '@/components/ui/button';
 // import { Icons } from "@/components/ui/icons";
 import { Table, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import {
-  useCreateCustomerMutation,
-  useGetCustomersQuery,
-} from '@/redux/features/customer/customer.api';
+import { useGetCustomersQuery } from '@/redux/features/customer/customer.api';
 import { useGetProductsForSaleQuery } from '@/redux/features/product/product.api';
 import {
-  clearCart,
+  toggleSaleSuccessful,
   updateSalesCountFromData,
 } from '@/redux/features/product/product.slice';
 import {
@@ -46,10 +43,9 @@ export default function SalesPage() {
   } | null>(null);
   const organizationId = useStore((state) => state.organizationId);
   const [showModal, setShowModal] = useState(false);
+  const [saleSuccessful, setSaleSuccessful] = useState(false);
 
-  // Create a table instance for pagination
-
-  const { data: salesData } = useGetSalesQuery(
+  const { data: salesData, isFetching: isFetchingSalesData } = useGetSalesQuery(
     {
       organization_id: organizationId,
     },
@@ -95,8 +91,6 @@ export default function SalesPage() {
       }
     );
 
-  const [createCustomer, { isLoading: isCreatingCustomer }] =
-    useCreateCustomerMutation();
   const [createSale, { isLoading: isCreatingSale }] = useCreateSaleMutation();
   const stockItems = ProductsData?.items ?? [];
 
@@ -114,6 +108,7 @@ export default function SalesPage() {
     manualPagination: true,
     pageCount: Math.ceil((formattedSales?.length || 0) / 5),
   });
+  console.log(table);
 
   const handleRowHover = (tableId: string, rowId: string) => {
     setHoveredRow({ tableId, rowId });
@@ -126,30 +121,15 @@ export default function SalesPage() {
     setShowModal((prev) => !prev);
   };
   const cart = useSelector((state: RootState) => state.cart.items);
-  const completeSale = async () => {
-    console.log('cart items', cart);
 
+  const completeSale = async () => {
     if (!organizationId) return;
 
     let customer = customersData?.items?.[0]; // Pick the first customer if available
 
-    if (!customer) {
-      try {
-        const newCustomerResponse = await createCustomer({
-          organization_id: organizationId,
-        }).unwrap();
-
-        customer = newCustomerResponse.customer;
-      } catch (error) {
-        console.error('Error creating customer:', error);
-        return;
-      }
-    }
-
     if (!customer) return;
-    console.log('customer id:', customer);
 
-    const products_sold = cart.map((item) => ({
+    const products_sold = cart.map((item: any) => ({
       product_id: item.id,
       amount: item.price,
       quantity: item.quantity,
@@ -167,8 +147,7 @@ export default function SalesPage() {
         .then((response) => {
           toast.success('Sale created. Please wait to view it.');
           console.log('Sale created:', response);
-          setShowModal(false);
-          dispatch(clearCart());
+          dispatch(toggleSaleSuccessful());
         });
     } catch (error) {
       console.error('Error creating sale:', error);
@@ -205,10 +184,10 @@ export default function SalesPage() {
           + Add New Sale
         </Button>
       )}
-      <div className='pl-1 bg-[#F6F8FA] rounded-tr-lg rounded-bl-lg rounded-br-lg'>
+      <div className='pl-1 bg-[#F6F8FA] border-[#DEE5ED] border-solid border-l rounded-tr-lg rounded-bl-lg rounded-br-lg'>
         {/* Standalone header */}
         <div className='bg-white border-r rounded-br-lg rounded-bl-lg rounded-tr-lg '>
-          <div className='min-w-[900px] border-t border-gray-200 rounded-tr-lg bg-white'>
+          <div className='min-w-[900px] border-b border-gray-200 rounded-tr-lg bg-white'>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -236,7 +215,12 @@ export default function SalesPage() {
             </Table>
           </div>
 
-          {groupedData.length === 0 && (
+          {isFetchingSalesData && (
+            <div className='w-full h-[40vh] flex justify-center items-center'>
+              Loading your sales data...
+            </div>
+          )}
+          {groupedData.length === 0 && !isFetchingSalesData && (
             <EmptySalePage toggleSalesModal={toggleSalesModal} />
           )}
 
@@ -285,7 +269,6 @@ export default function SalesPage() {
         onCompleteSale={completeSale}
         isFetchingProducts={isFetchingProducts}
         isCreatingSale={isCreatingSale}
-        isCreatingCustomer={isCreatingCustomer}
         isFetchingCustomers={isFetchingCustomers}
         stockItems={stockItems as unknown as Product[]}
       />
